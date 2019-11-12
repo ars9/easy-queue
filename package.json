@@ -1,0 +1,51 @@
+{
+  "name": "easy-queue",
+  "version": "0.9.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ars9/easy-queue"
+  },
+  "description": "Easy to use modern promise-based queue with concurrency control",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "tslint --project tsconfig.json"
+  },
+  "keywords": [
+    "queue",
+    "concurrency",
+    "promise"
+  ],
+  "author": "Andrei Arsenin",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.7",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
