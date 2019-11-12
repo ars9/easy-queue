@@ -1,6 +1,7 @@
 {
-  "name": "easy-queue",
+  "name": "@ars9/easy-queue",
   "version": "0.9.0",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/ars9/easy-queue"
@@ -14,6 +15,7 @@
   "scripts": {
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
+    "build": "tsc",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "tslint --project tsconfig.json"
