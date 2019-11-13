@@ -8,7 +8,7 @@ describe('Queue', () => {
   let jobsDone = 0;
   let jobsStarted = 0;
 
-  const JOB_LENGTH = 10;
+  const JOB_LENGTH = 15;
 
   // Unhandled rejections should be considered failure
   process.on('unhandledRejection', err => fail(err));
@@ -146,5 +146,23 @@ describe('Queue', () => {
     await q.wait();
 
     expect(onError).toBeCalledWith(`FAIL`);
+  });
+
+  it('should handle non-async jobs correctly', async () => {
+    const q = new Queue(2);
+
+    const j = () => {
+      jobsStarted++;
+      jobsDone++;
+    };
+
+    q.enqueue(j);
+    q.enqueue(j);
+    q.enqueue(j);
+
+    await q.wait();
+
+    expect(jobsStarted).toBe(3);
+    expect(jobsDone).toBe(3);
   });
 });

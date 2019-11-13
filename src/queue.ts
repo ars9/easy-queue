@@ -1,4 +1,4 @@
-export type QueueJob = () => Promise<any>;
+export type QueueJob = () => any | Promise<any>;
 
 export type QueueErrorHandler = (error: Error) => void;
 
@@ -79,12 +79,18 @@ export class Queue {
       }
 
       this.counter++;
-      job()
-        .catch(e => (this.onErrorHandle ? this.onErrorHandle(e) : undefined))
-        .finally(() => {
+      const r = job();
+      if (r instanceof Promise) {
+        r.catch(e =>
+          this.onErrorHandle ? this.onErrorHandle(e) : undefined,
+        ).finally(() => {
           this.counter--;
           this.execute();
         });
+      } else {
+        this.counter--;
+        this.execute();
+      }
     }
   }
 
