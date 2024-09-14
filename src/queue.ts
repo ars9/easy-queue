@@ -1,11 +1,11 @@
-export type QueueJob = () => any | Promise<any>;
+export type QueueJob = () => unknown | Promise<unknown>;
 
 export type QueueErrorHandler = (error: Error) => void;
 
 export class Queue {
   private counter: number = 0;
   private pending: QueueJob[] = [];
-  private resolve?: (value?: any) => void;
+  private resolve?: () => void;
   private onErrorHandle?: QueueErrorHandler;
 
   /**
