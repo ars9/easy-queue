@@ -19,7 +19,7 @@ describe('Queue', () => {
   });
 
   const jobFactory = (duration: number) => () => {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       jobsStarted++;
       setTimeout(() => {
         jobsDone++;
