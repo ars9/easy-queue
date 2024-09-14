@@ -39,9 +39,7 @@ describe('Queue', () => {
   it('should execute all jobs with default settings', async () => {
     const q = new Queue();
 
-    for (const _ of Array(10)) {
-      q.enqueue(jobFactory(JOB_LENGTH));
-    }
+    Array(10).fill(null).forEach(() => q.enqueue(jobFactory(JOB_LENGTH)));
 
     // Expect 10 jobs in pending
     expect(q.pendingJobs).toBe(10);
@@ -70,23 +68,25 @@ describe('Queue', () => {
 
   it('should fail on invalid concurrency parameter', async () => {
     const rangeError = `"concurrency" should be positive finite number`;
-    expect(() => new Queue(-1)).toThrowError(rangeError);
-    expect(() => new Queue(Infinity)).toThrowError(rangeError);
-    expect(() => new Queue(NaN)).toThrowError(rangeError);
-    expect(() => new Queue(0)).toThrowError(rangeError);
+    expect(() => new Queue(-1)).toThrow(rangeError);
+    expect(() => new Queue(Infinity)).toThrow(rangeError);
+    expect(() => new Queue(NaN)).toThrow(rangeError);
+    expect(() => new Queue(0)).toThrow(rangeError);
 
     const typeError = `"concurrency" should be a number`;
-    expect(() => new Queue('1' as any)).toThrowError(typeError);
-    expect(() => new Queue([] as any)).toThrowError(typeError);
-    expect(() => new Queue({} as any)).toThrowError(typeError);
+
+    // @ts-expect-error Queue expects a number
+    expect(() => new Queue('1')).toThrow(typeError);
+    // @ts-expect-error Queue expects a number
+    expect(() => new Queue([])).toThrow(typeError);
+    // @ts-expect-error Queue expects a number
+    expect(() => new Queue({})).toThrow(typeError);
   });
 
   it('should execute jobs with correct concurrency', async () => {
     const q = new Queue();
 
-    for (const _ of Array(20)) {
-      q.enqueue(jobFactory(JOB_LENGTH));
-    }
+    Array(20).fill(null).forEach(() => q.enqueue(jobFactory(JOB_LENGTH)));
 
     // Expect 20 jobs in pending
     expect(q.pendingJobs).toBe(20);
@@ -145,7 +145,7 @@ describe('Queue', () => {
 
     await q.wait();
 
-    expect(onError).toBeCalledWith(`FAIL`);
+    expect(onError).toHaveBeenCalledWith(`FAIL`);
   });
 
   it('should handle non-async jobs correctly', async () => {
